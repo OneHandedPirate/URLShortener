@@ -1,0 +1,67 @@
+{% extends 'urls/default.html' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block content %}
+    <form id="token-creation-form" action="{% url 'token_create' %}" method="post">
+        {{ form.as_p }}
+        <button class="btn btn-primary d-block mx-auto shadow mt-4" type="submit">Shorten</button>
+    </form>
+
+    <div id="result" class="mx-auto my-3 text-center" style="max-width: 400px"></div>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        const result = document.querySelector('#result')
+        const tokenCreationForm = document.querySelector('#token-creation-form');
+        const urlInput = document.querySelector('#url-input');
+
+        tokenCreationForm.addEventListener('submit', handleTokenCreation);
+
+        function handleTokenCreation(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const url = form.action;
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.short_url) {
+                        let short_url = data.short_url;
+                        urlInput.value = ''
+                        result.innerHTML = `
+                               <input
+                                   class="form-control text-center mx-auto mt-5 mb-3 shadow"
+                                   type="text"
+                                   value="{{ absolute_url }}${short_url}"
+                                   style="max-width: 85%"
+                                   id="short-url" disabled>
+                               <button class="btn btn-sm btn-primary col-2 mb-3 shadow"
+                                       onclick="copyShortUrl(document.querySelector('#short-url').value)">Copy</button>
+`
+                    } else if (data.errors) {
+                        result.innerHTML = data.errors
+                    }
+
+                })
+                .catch(err => console.log(err))
+        }
+
+        function copyShortUrl(url) {
+            if (!(result.innerHTML.includes(`<p>Copied!</p>`))) {
+                result.innerHTML += `<p>Copied!</p>`
+                setTimeout(() => {
+                    result.innerHTML = result.innerHTML.replace('<p>Copied!</p>', '')}, 3000)
+            }
+            navigator.clipboard.writeText(url)
+        }
+    </script>
+{% endblock %}

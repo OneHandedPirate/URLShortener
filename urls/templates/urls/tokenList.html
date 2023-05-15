@@ -1,0 +1,42 @@
+{% extends 'urls/default.html' %}
+
+{% block title %}URLs List{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">URLs List</h1>
+    <ul class="list-unstyled">
+        {% for token in tokens %}
+            <li>
+                <div
+                        class="mx-auto text-wrap rounded-4 shadow text-wrap text-break p-3 text-start my-3"
+                        style="max-width: 700px"
+                >
+                    <p class="m-1">
+                        <strong>Original Link: </strong>
+                        <a
+                                href="{{ token.original_url }}"
+                                target="_blank"
+                        >
+                            {{ token.original_url }}
+                        </a>
+                    </p>
+                    <p class="m-1">
+                        <strong>Shortened Link: </strong>
+                        <a
+                                href="{% url 'short_url_redirect' token.short_url %}"
+                                target="_blank"
+                        >
+                            {{ absolute_url }}/{{ token.short_url }}
+                        </a>
+                    </p>
+                    <p class="m-1">
+                        <strong>Creation Time: </strong>{{ token.created_at|date:"d.m.Y, H:i" }}
+                    </p>
+                    <p class="m-1">
+                        <strong>Request Count: </strong>{{ token.requests_count }}
+                    </p>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
