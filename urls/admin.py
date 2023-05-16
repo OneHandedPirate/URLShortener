@@ -1,7 +1,9 @@
 from datetime import timedelta
 
 from django.contrib import admin
+
 from .models import Token
+from .utils import create_short_url
 
 
 class TokenAdmin(admin.ModelAdmin):

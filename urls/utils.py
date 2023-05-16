@@ -1,13 +1,13 @@
-from string import ascii_letters, digits
 from random import choices
+from django.utils.baseconv import BASE62_ALPHABET
 
 from urls.models import Token
 
-CHARS = ascii_letters + digits
+CHARS = BASE62_ALPHABET
 
 menu = [
-    {'title': 'Main', 'url': 'token_create'},
-    {'title': 'URLs List', 'url': 'token_list'},
+    {'title': 'Main', 'url_name': 'token_create'},
+    {'title': 'URLs List', 'url_name': 'token_list'},
 ]
 
 

@@ -33,7 +33,10 @@
                         <strong>Creation Time: </strong>{{ token.created_at|date:"d.m.Y, H:i" }}
                     </p>
                     <p class="m-1">
-                        <strong>Request Count: </strong>{{ token.requests_count }}
+                        <strong>Expiration Time: </strong>{{ token.expiration_time|date:"d.m.Y, H:i" }}
+                    </p>
+                    <p class="m-1">
+                        <strong>Requests Count: </strong>{{ token.requests_count }}
                     </p>
                 </div>
             </li>

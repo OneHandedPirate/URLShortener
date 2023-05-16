@@ -8,7 +8,7 @@ SECRET_KEY = env.DJANGO_SK
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -100,3 +100,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_TIMEZONE = env.TZ
 CELERY_BROKER_URL = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
 CELERY_RESULT_BACKEND = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
+
+# DRF Config
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
+
+TOKEN_LIFETIME = 7  # days

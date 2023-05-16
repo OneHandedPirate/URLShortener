@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
@@ -7,6 +9,7 @@ from django.db.models import F
 from .models import Token
 from .forms import TokenForm
 from .utils import create_short_url, menu
+from URLShortener.settings import TOKEN_LIFETIME
 
 
 class TokenCreateView(CreateView):
@@ -22,15 +25,12 @@ class TokenCreateView(CreateView):
         return context
 
     def form_valid(self, form):
-        existing_token = Token.objects.filter(original_url=form.cleaned_data['original_url'])
-        if existing_token.exists():
-            return JsonResponse({'short_url': Token.objects.get(original_url=
-                                                                form.cleaned_data['original_url']).short_url})
-        else:
-            short_url = create_short_url()
-            form.instance.short_url = short_url
-            super().form_valid(form)
-            return JsonResponse({'short_url': short_url})
+        original_url = form.cleaned_data['original_url']
+        token, created = Token.objects.get_or_create(original_url=original_url)
+        if created:
+            token.short_url = create_short_url()
+            token.save()
+        return JsonResponse({'short_url': token.short_url})
 
     def form_invalid(self, form):
         return JsonResponse({'errors': [i for i in form.errors.values()]})
@@ -40,7 +40,8 @@ class TokenListView(ListView):
     model = Token
     template_name = 'urls/tokenList.html'
     context_object_name = 'tokens'
-    queryset = Token.objects.all().order_by('-created_at')
+    queryset = Token.objects.all().order_by('-created_at')\
+        .annotate(expiration_time=F('created_at')+datetime.timedelta(days=TOKEN_LIFETIME))
     paginate_by = 10
 
     def get_context_data(self, **kwargs):

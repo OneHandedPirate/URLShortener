@@ -2,7 +2,7 @@
     <ul class="pagination justify-content-center mt-3">
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page=1{% if filter_params %}{{ filter_params }}{% endif %}"
+                <a class="page-link" href="?page=1"
                    aria-label="First">
                     <span><<</span>
                 </a>
@@ -17,14 +17,14 @@
             {% if page_obj.number == num %}
                 <li class="page-item active"><span class="page-link">{{ num }}</span></li>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <li class="page-item"><a class="page-link" href="?page={{ num }}{% if filter_params %}{{ filter_params }}{% endif %}">{{ num }}</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
             <li class="page-item">
                 <a class="page-link" href="?page=
-                            {{ page_obj.paginator.num_pages }}{% if filter_params %}{{ filter_params }}{% endif %}"
+                            {{ page_obj.paginator.num_pages }}"
                    aria-label="Last">
                     <span>>></span>
                 </a>
@@ -35,4 +35,9 @@
             </li>
         {% endif %}
     </ul>
+    <div class="text-center mt-2">
+        <p class="text-muted">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </p>
+    </div>
 </nav>

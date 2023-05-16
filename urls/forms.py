@@ -11,7 +11,7 @@ class TokenForm(forms.ModelForm):
             'original_url': forms.TextInput(attrs={'placeholder': 'Enter URL...',
                                                    'class': 'form-control my-3 mx-auto shadow',
                                                    'id': 'url-input',
-                                                   'style': 'max-width:500px;'})
+                                                   'style': 'max-width:600px;'})
         }
         labels = {
             'original_url': ''

@@ -14,7 +14,7 @@
 
 {% block script %}
     <script>
-        const result = document.querySelector('#result')
+        const result = document.querySelector('#result');
         const tokenCreationForm = document.querySelector('#token-creation-form');
         const urlInput = document.querySelector('#url-input');
 
@@ -36,7 +36,7 @@
                 .then(data => {
                     if (data.short_url) {
                         let short_url = data.short_url;
-                        urlInput.value = ''
+                        urlInput.value = '';
                         result.innerHTML = `
                                <input
                                    class="form-control text-center mx-auto mt-5 mb-3 shadow"
@@ -48,7 +48,7 @@
                                        onclick="copyShortUrl(document.querySelector('#short-url').value)">Copy</button>
 `
                     } else if (data.errors) {
-                        result.innerHTML = data.errors
+                        result.innerHTML = data.errors;
                     }
 
                 })
@@ -57,11 +57,12 @@
 
         function copyShortUrl(url) {
             if (!(result.innerHTML.includes(`<p>Copied!</p>`))) {
-                result.innerHTML += `<p>Copied!</p>`
+                result.innerHTML += `<p>Copied!</p>`;
                 setTimeout(() => {
-                    result.innerHTML = result.innerHTML.replace('<p>Copied!</p>', '')}, 3000)
+                    result.innerHTML = result.innerHTML.replace('<p>Copied!</p>', '')
+                }, 3000);
             }
-            navigator.clipboard.writeText(url)
+            navigator.clipboard.writeText(url);
         }
     </script>
 {% endblock %}
