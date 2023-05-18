@@ -17,10 +17,7 @@
     `REDIS_PORT` - Redis-server post.<br>
     `REDIS_DB` - Redis-server database.<br>
     `TOKEN_LIFETIME` - lifetime of the shortened URLs (in days).<br>
- 
-- Apply migrations: <br> ```python manage.py migrate```
-- Create superuser : <br> ```python manage.py createsuperuser```
-
+<hr>
 
 *If you chose Postgresql as your database  - perform the followings steps:<br>  
   - Uncomment respective lines of code in `DATABASES` section in `URLShortener/settings.py` and comment or simply delete config for sqlite3.
@@ -32,7 +29,13 @@
     `POSTGRES_PORT` - postgres port.<br>
   - Install `psycopg2`:<br>
     `pip install psycopg2` (Windows)<br>
-    `pip install psycopg2-binary` (Linux or MasOS)
+    `pip install psycopg2-binary` (Linux or MasOS)<br>
+<hr>
+
+- Apply migrations: <br> ```python manage.py migrate```
+- Create superuser : <br> ```python manage.py createsuperuser```
+
+
 ### Start:
 
 - Run Django-server: <br> `python manage.py runserver`
