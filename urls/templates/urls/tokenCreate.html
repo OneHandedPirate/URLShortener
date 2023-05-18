@@ -5,10 +5,10 @@
 {% block content %}
     <form id="token-creation-form" action="{% url 'token_create' %}" method="post">
         {{ form.as_p }}
-        <button class="btn btn-primary d-block mx-auto shadow mt-4" type="submit">Shorten</button>
+        <button class="btn btn-secondary d-block mx-auto shadow mt-4" type="submit">Shorten</button>
     </form>
 
-    <div id="result" class="mx-auto my-3 text-center" style="max-width: 400px"></div>
+    <div id="result" class="mx-auto my-3 text-center" style="max-width: 700px"></div>
 {% endblock %}
 
 
@@ -36,17 +36,39 @@
                 .then(data => {
                     if (data.short_url) {
                         let short_url = data.short_url;
-                        urlInput.value = '';
                         result.innerHTML = `
+                               <p class="mt-5 mb-1"><strong>Original link: </strong>
+                                   <p class="text-wrap text-break">
+                                       <a href='${urlInput.value}' target='_blank'>
+                                           ${urlInput.value}
+                                       </a>
+                                       </p>
+                                   <p/>
+                               <p class="mt-5"><strong>Short link:</strong></p>
                                <input
-                                   class="form-control text-center mx-auto mt-5 mb-3 shadow"
+                                   class="form-control text-center mx-auto mb-4 shadow"
                                    type="text"
                                    value="{{ absolute_url }}${short_url}"
-                                   style="max-width: 85%"
+                                   style="max-width: 350px"
                                    id="short-url" disabled>
-                               <button class="btn btn-sm btn-primary col-2 mb-3 shadow"
-                                       onclick="copyShortUrl(document.querySelector('#short-url').value)">Copy</button>
+                               <div class='position-relative' style="position:relative">
+                                   <button id="copy-btn"
+                                           class="btn btn-sm btn-outline-secondary col-2 mb-4 shadow"
+                                           onclick="copyShortUrl(document.querySelector('#short-url').value)">
+                                           Copy
+                                   </button>
+                                   <span
+                                       class="mx-2 position-absolute end-40 rounded-3 shadow py-1 px-3"
+                                       id="copy-message"
+                                       style="display:none;height:35px"
+                                   >
+                                       Copied!
+                                   </span>
+                               </div>
+                               <p>Short link <strong>expires</strong> at: ${data.expires_at}</p>
 `
+                        console.log(data)
+                        urlInput.value = '';
                     } else if (data.errors) {
                         result.innerHTML = data.errors;
                     }
@@ -56,12 +78,11 @@
         }
 
         function copyShortUrl(url) {
-            if (!(result.innerHTML.includes(`<p>Copied!</p>`))) {
-                result.innerHTML += `<p>Copied!</p>`;
-                setTimeout(() => {
-                    result.innerHTML = result.innerHTML.replace('<p>Copied!</p>', '')
-                }, 3000);
-            }
+            let copyMsg = document.querySelector('#copy-message');
+            copyMsg.style.display = "inline-block";
+            setTimeout(() => {
+                copyMsg.style.display = "none";
+              }, 3000);
             navigator.clipboard.writeText(url);
         }
     </script>

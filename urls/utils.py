@@ -12,8 +12,20 @@ menu = [
 
 
 def create_short_url():
+    """Create a short URL token """
+
     while True:
         short_url = ''.join(choices(CHARS, k=6))
         if Token.objects.filter(short_url=short_url).exists():
             continue
         return short_url
+
+
+def check_short_url(full_url):
+    """
+    Check whether the link is already shortened
+    by checking last 6 chars of passed original URL
+    """
+
+    short_url = full_url[-6:]
+    return Token.objects.filter(short_url=short_url).exists()

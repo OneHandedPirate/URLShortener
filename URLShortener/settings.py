@@ -8,7 +8,7 @@ SECRET_KEY = env.DJANGO_SK
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -104,7 +104,7 @@ CELERY_RESULT_BACKEND = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_D
 # DRF Config
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 50
 }
 
-TOKEN_LIFETIME = 7  # days
+TOKEN_LIFETIME = env.TOKEN_LIFETIME  # days

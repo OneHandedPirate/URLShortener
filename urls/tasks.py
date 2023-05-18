@@ -5,9 +5,7 @@ from .models import Token
 
 @shared_task
 def delete_url(token_id):
-    """
-    Deletes a token
-    """
+    """Delete a token"""
 
     token = Token.objects.get(pk=token_id)
     token.delete()

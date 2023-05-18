@@ -3,8 +3,9 @@ import datetime
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
+from rest_framework.reverse import reverse
 
 from .models import Token
 from .forms import TokenForm
@@ -13,6 +14,8 @@ from URLShortener.settings import TOKEN_LIFETIME
 
 
 class TokenCreateView(CreateView):
+    """Create a new token"""
+
     model = Token
     form_class = TokenForm
     template_name = 'urls/tokenCreate.html'
@@ -26,17 +29,22 @@ class TokenCreateView(CreateView):
 
     def form_valid(self, form):
         original_url = form.cleaned_data['original_url']
+
         token, created = Token.objects.get_or_create(original_url=original_url)
         if created:
             token.short_url = create_short_url()
             token.save()
-        return JsonResponse({'short_url': token.short_url})
+        expires_at = token.created_at + datetime.timedelta(days=TOKEN_LIFETIME)
+        return JsonResponse({'short_url': token.short_url,
+                             'expires_at': expires_at.strftime('%d.%m.%Y, %H:%M')})
 
     def form_invalid(self, form):
         return JsonResponse({'errors': [i for i in form.errors.values()]})
 
 
 class TokenListView(ListView):
+    """List of all tokens with detailed info"""
+
     model = Token
     template_name = 'urls/tokenList.html'
     context_object_name = 'tokens'
@@ -52,9 +60,19 @@ class TokenListView(ListView):
 
 
 def short_url_redirect(request, short_url):
+    """Redirect from the short link"""
+
     token = get_object_or_404(Token, short_url=short_url)
     Token.objects.filter(short_url=short_url).update(requests_count=F('requests_count') + 1)
     return redirect(token.original_url)
+
+
+def page_not_found_view(request, exception=None):
+    """404 handler"""
+
+    context = {'menu': menu}
+    return render(request, 'urls/404.html', context=context)
+
 
 
 

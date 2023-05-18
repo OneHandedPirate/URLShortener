@@ -6,11 +6,13 @@ from rest_framework.reverse import reverse
 from URLShortener.settings import TOKEN_LIFETIME
 from urls.models import Token
 from urls.utils import create_short_url
+from .validators import check_original_url_validator
 
 
-class TokenCreateSerializer(serializers.ModelSerializer):
+class TokenSerializer(serializers.ModelSerializer):
     full_short_url = serializers.SerializerMethodField(read_only=True)
     expiration_time = serializers.SerializerMethodField(read_only=True)
+    original_url = serializers.URLField(validators=[check_original_url_validator])
 
     class Meta:
         model = Token
@@ -36,5 +38,5 @@ class TokenCreateSerializer(serializers.ModelSerializer):
         if request is None:
             return None
 
-        return reverse('short_url_redirect', kwargs={'short_url': obj.short_url}, request=request)
-
+        return reverse('short_url_redirect', kwargs={'short_url': obj.short_url},
+                       request=request)

@@ -15,3 +15,5 @@ POSTGRES_DB = os.getenv('POSTGRES_DB')
 REDIS_HOST = os.getenv('REDIS_HOST')
 REDIS_PORT = os.getenv('REDIS_PORT')
 REDIS_DB = os.getenv('REDIS_DB')
+
+TOKEN_LIFETIME = int(os.getenv('TOKEN_LIFETIME'))
