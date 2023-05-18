@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1 class="mb-4">URLs List</h1>
+    {% if tokens %}
     <ul class="list-unstyled">
         {% for token in tokens %}
             <li>
@@ -42,4 +43,7 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+        <p>No URLs have been shortened yet.</p>
+    {% endif %}
 {% endblock %}
