@@ -5,7 +5,6 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
-from rest_framework.reverse import reverse
 
 from .models import Token
 from .forms import TokenForm
@@ -39,7 +38,7 @@ class TokenCreateView(CreateView):
                              'expires_at': expires_at.strftime('%d.%m.%Y, %H:%M')})
 
     def form_invalid(self, form):
-        return JsonResponse({'errors': [i for i in form.errors.values()]})
+        return JsonResponse({'errors': [str(i) for i in form.errors.values()]})
 
 
 class TokenListView(ListView):
@@ -72,8 +71,3 @@ def page_not_found_view(request, exception=None):
 
     context = {'menu': menu}
     return render(request, 'urls/404.html', context=context)
-
-
-
-
-
