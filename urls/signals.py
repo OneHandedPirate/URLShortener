@@ -11,5 +11,6 @@ from URLShortener.settings import TOKEN_LIFETIME
 def delete_token(sender, instance, created, **kwargs):
     """Passes token delete delayed task to celery"""
 
-    expiration_time = instance.created_at + timedelta(days=TOKEN_LIFETIME)
-    delete_url.apply_async(args=[instance.pk], eta=expiration_time)
+    if created:
+        expiration_time = instance.created_at + timedelta(days=TOKEN_LIFETIME)
+        delete_url.apply_async(args=[instance.pk], eta=expiration_time)
