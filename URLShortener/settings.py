@@ -8,7 +8,7 @@ SECRET_KEY = env.DJANGO_SK
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -105,6 +105,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_TIMEZONE = env.TZ
 CELERY_BROKER_URL = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
 CELERY_RESULT_BACKEND = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
+
 
 # DRF Config
 REST_FRAMEWORK = {

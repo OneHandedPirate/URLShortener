@@ -4,7 +4,7 @@
 
 ### Requirements:
 - Postgresql database* (optional)
-- Redis-server
+- Redis-server**
 
 ### Installation:
 - Create and activate new virtual environment in the chosen (root) folder. 
@@ -16,6 +16,7 @@
     `REDIS_HOST` - host of your Redis server.<br>
     `REDIS_PORT` - Redis-server post.<br>
     `REDIS_DB` - Redis-server database.<br>
+    `REDIS_USER` -  
     `TOKEN_LIFETIME` - lifetime of the shortened URLs (in days).<br>
 <hr>
 
@@ -30,6 +31,16 @@
   - Install `psycopg2`:<br>
     `pip install psycopg2` (Windows)<br>
     `pip install psycopg2-binary` (Linux or MasOS)<br>
+<hr>
+
+**If you use third-party service for Redis - add credentials to Celery settings in `settings.py` like so:<br> 
+```
+CELERY_BROKER_URL = f'redis://{env.REDIS_USER}:{env.REDIS_PASSWORD}@{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
+CELERY_RESULT_BACKEND = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}' 
+``` 
+And add credential to `.env`:<br>
+    `REDIS_USER` - username<br>
+    `REDIS_PASSWORD` - password
 <hr>
 
 - Apply migrations: <br> ```python manage.py migrate```
