@@ -53,7 +53,7 @@ class TokenListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['absolute_url'] = ''.join(self.request.build_absolute_uri().split('/')[:-2])
+        context['absolute_url'] = ''.join(self.request.build_absolute_uri()[:-6])
         context['menu'] = menu
         return context
 
