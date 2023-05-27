@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from datetime import timedelta
 
 from .models import Token
-from .tasks import delete_url
+from .tasks import delete_token_task
 from URLShortener.settings import TOKEN_LIFETIME
 
 
@@ -13,4 +13,4 @@ def delete_token(sender, instance, created, **kwargs):
 
     if created:
         expiration_time = instance.created_at + timedelta(days=TOKEN_LIFETIME)
-        delete_url.apply_async(args=[instance.pk], eta=expiration_time)
+        delete_token_task.apply_async(args=[instance.pk], eta=expiration_time)
