@@ -1,0 +1,38 @@
+{% extends 'urls/default.html' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block content %}
+    <form id="token-creation-form" hx-post="{% url 'token_create' %}" hx-target="#result">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="submit-btn" class="btn btn-secondary d-block mx-auto shadow mt-4" type="submit">Shorten</button>
+    </form>
+
+    <div id="result" class="mx-auto my-5 text-center" style="max-width: 700px">
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        const submitButton = document.querySelector('#submit-btn');
+        const urlInput = document.querySelector('#url-input');
+
+        console.log(submitButton)
+        submitButton.addEventListener('click', () => {
+            setTimeout(() => {
+                urlInput.value = ""
+            }, 50);
+        })
+
+        function copyShortUrl(url) {
+            let copyMsg = document.querySelector('#copy-message');
+            copyMsg.style.opacity = "1";
+            setTimeout(() => {
+                copyMsg.style.opacity = "0";
+              }, 3000);
+            navigator.clipboard.writeText(url);
+        }
+    </script>
+{% endblock %}
