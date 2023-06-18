@@ -23,11 +23,6 @@ class TokenCreateView(CreateView):
     template_name = 'urls/mainPage.html'
     success_url = reverse_lazy('token_create')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['absolute_url'] = self.request.build_absolute_uri()
-        return context
-
     def form_valid(self, form):
         original_url = form.cleaned_data['original_url']
 

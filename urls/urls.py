@@ -3,7 +3,7 @@ from .views import TokenCreateView, TokenListView, short_url_redirect, main_page
 
 urlpatterns = [
     path('', main_page, name='main'),
-    path('list/', TokenListView.as_view(), name='token_list'),
+    path('list', TokenListView.as_view(), name='token_list'),
     path('<str:short_url>', short_url_redirect, name='short_url_redirect'),
 ]
 
