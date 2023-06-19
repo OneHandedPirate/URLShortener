@@ -7,3 +7,7 @@
     margin: 0 auto;
     box-shadow: 0 5px 10px 0 #d1d1d1;
 }
+
+#copy-message {
+    transition: 300ms ease-in-out;
+}

@@ -19,3 +19,4 @@ REDIS_USER = os.getenv('REDIS_USER')
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 
 TOKEN_LIFETIME = int(os.getenv('TOKEN_LIFETIME'))
+DJANGO_DEBUG = int(os.getenv('DJANGO_DEBUG'))

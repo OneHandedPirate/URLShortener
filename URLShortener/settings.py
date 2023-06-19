@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env.DJANGO_SK
 
-DEBUG = True
+DEBUG = env.DJANGO_DEBUG
 
 ALLOWED_HOSTS = ['*']
 
@@ -55,18 +55,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'URLShortener.wsgi.application'
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': env.POSTGRES_DB,
-    #     'USER': env.POSTGRES_USER,
-    #     'PASSWORD': env.POSTGRES_PASSWORD,
-    #     'HOST': env.POSTGRES_HOST,
-    #     'PORT': env.POSTGRES_PORT,
-    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.POSTGRES_DB,
+        'USER': env.POSTGRES_USER,
+        'PASSWORD': env.POSTGRES_PASSWORD,
+        'HOST': env.POSTGRES_HOST,
+        'PORT': env.POSTGRES_PORT,
     },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
 
 }
 
@@ -103,8 +103,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery Config
 CELERY_TIMEZONE = env.TZ
-CELERY_BROKER_URL = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
-CELERY_RESULT_BACKEND = f'redis://{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
+CELERY_BROKER_URL = f'redis://{env.REDIS_USER}:{env.REDIS_PASSWORD}@{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
+CELERY_RESULT_BACKEND = f'redis://{env.REDIS_USER}:{env.REDIS_PASSWORD}@{env.REDIS_HOST}:{env.REDIS_PORT}/{env.REDIS_DB}'
 
 
 # DRF Config

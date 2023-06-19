@@ -13,6 +13,7 @@
 - Create `.env` file in the root folder with the following variables:<br>
     `DJANGO_SK` - Secret Key for Django Project.<br>
     `TZ` - preferred time zone.<br>
+    `DJANGO_DEBUG` - variable that indicates whether debug is enabled.<br>
     `REDIS_HOST` - host of your Redis server.<br>
     `REDIS_PORT` - Redis-server post.<br>
     `REDIS_DB` - Redis-server database.<br>

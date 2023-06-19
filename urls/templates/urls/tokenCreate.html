@@ -1,4 +1,5 @@
 {% extends 'urls/default.html' %}
+{% load static %}
 
 {% block title %}Main Page{% endblock %}
 
@@ -8,7 +9,7 @@
         <button class="btn btn-secondary d-block mx-auto shadow mt-4" type="submit">Shorten</button>
     </form>
 
-    <div id="result" class="mx-auto my-3 text-center" style="max-width: 700px"></div>
+    <div id="result" class="mx-auto my-4 text-center" style="max-width: 700px"></div>
 {% endblock %}
 
 
@@ -22,6 +23,7 @@
 
         function handleTokenCreation(event) {
             event.preventDefault();
+            result.innerHTML = `<img src="{% static  'urls/assets/spinner.svg' %}"/>`
             const form = event.target;
             const formData = new FormData(form);
             const url = form.action;
@@ -44,7 +46,7 @@
                                        </a>
                                        </p>
                                    <p/>
-                               <p class="mt-5"><strong>Short link:</strong></p>
+                               <p class="mt-4"><strong>Short link:</strong></p>
                                <input
                                    class="form-control text-center mx-auto mb-4 shadow"
                                    type="text"
@@ -60,7 +62,7 @@
                                    <span
                                        class="mx-2 position-absolute end-40 rounded-3 shadow py-1 px-3"
                                        id="copy-message"
-                                       style="display:none;height:35px"
+                                       style="opacity: 0;height:35px"
                                    >
                                        Copied!
                                    </span>
@@ -79,9 +81,9 @@
 
         function copyShortUrl(url) {
             let copyMsg = document.querySelector('#copy-message');
-            copyMsg.style.display = "inline-block";
+            copyMsg.style.opacity = "1";
             setTimeout(() => {
-                copyMsg.style.display = "none";
+                copyMsg.style.opacity = "0";
               }, 3000);
             navigator.clipboard.writeText(url);
         }
