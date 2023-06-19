@@ -6,7 +6,7 @@ from urls.models import Token
 CHARS = BASE62_ALPHABET
 
 menu = [
-    {'title': 'Main', 'url_name': 'main'},
+    {'title': 'Main', 'url_name': 'token_create'},
     {'title': 'URLs List', 'url_name': 'token_list'},
 ]
 

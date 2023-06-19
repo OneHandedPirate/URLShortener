@@ -1,5 +1,6 @@
 import datetime
 
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 from django.shortcuts import get_object_or_404, redirect, render
@@ -11,21 +12,18 @@ from .utils import create_short_url, menu
 from URLShortener.settings import TOKEN_LIFETIME
 
 
-def main_page(request):
-    return render(request, 'urls/mainPage.html', {'menu': menu, 'form': TokenForm})
-
-
 class TokenCreateView(CreateView):
     """Create a new token"""
 
     model = Token
     form_class = TokenForm
-    template_name = 'urls/mainPage.html'
+    template_name = 'urls/tokenCreate.html'
     success_url = reverse_lazy('token_create')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['absolute_url'] = self.request.build_absolute_uri()
+        context['menu'] = menu
         return context
 
     def form_valid(self, form):
@@ -36,15 +34,11 @@ class TokenCreateView(CreateView):
             token.short_url = create_short_url()
             token.save()
         expires_at = token.created_at + datetime.timedelta(days=TOKEN_LIFETIME)
-        return render(self.request, 'urls/token_created.html',
-                      {'short_url': token.short_url,
-                       'expires_at': expires_at.strftime('%d.%m.%Y, %H:%M'),
-                       'original_url': original_url,
-                       'absolute_url': self.request.build_absolute_uri()[:-13]})
+        return JsonResponse({'short_url': token.short_url,
+                             'expires_at': expires_at.strftime('%d.%m.%Y, %H:%M')})
 
     def form_invalid(self, form):
-        return render(self.request, 'urls/token_creation_errors.html',
-                      {'errors': [str(i) for i in form.errors.values()]})
+        return JsonResponse({'errors': [str(i) for i in form.errors.values()]})
 
 
 class TokenListView(ListView):
@@ -53,8 +47,8 @@ class TokenListView(ListView):
     model = Token
     template_name = 'urls/tokenList.html'
     context_object_name = 'tokens'
-    queryset = Token.objects.all().order_by('-created_at') \
-        .annotate(expiration_time=F('created_at') + datetime.timedelta(days=TOKEN_LIFETIME))
+    queryset = Token.objects.all().order_by('-created_at')\
+        .annotate(expiration_time=F('created_at')+datetime.timedelta(days=TOKEN_LIFETIME))
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
